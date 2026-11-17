@@ -1,0 +1,155 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# CAOAS — Payroll Module (.gitignore)
+#
+# Works at the repo root in both layouts:
+#   reference copy :  payroll_b/**  +  payroll_f/**
+#   live project   :  hrms_backend/**  +  frontend/**
+#
+# NOTE: this file only stops NEW files being tracked. Anything already committed
+# stays tracked until you untrack it — see the "ALREADY TRACKED" note at the end.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 1. SECRETS  (Rule 12: zero secrets in git history)
+# ──────────────────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+credentials.json
+service-account*.json
+secrets.json
+
+# Django local override / secret settings
+local_settings.py
+settings_local.py
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 2. PYTHON / DJANGO  (payroll_b/**, hrms_backend/**)
+# ──────────────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+sdist/
+
+# virtualenvs
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 3. EPHEMERAL TEST ARTIFACTS  (Rule 7 — never committed, ever)
+# ──────────────────────────────────────────────────────────────────────────────
+*.sqlite3
+*.sqlite3-journal
+db.sqlite3
+settings_sqlite.py
+temp_chk/
+temp_chk.js
+temp_chk.mjs
+scratch/
+*.smoke.py
+smoke_*.py
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 4. GENERATED PAYROLL OUTPUT  (payslip PDFs, registers, statutory workbooks)
+#    Generated on demand under MEDIA_ROOT — reproducible, never source.
+# ──────────────────────────────────────────────────────────────────────────────
+media/
+/media/
+staticfiles/
+/static_root/
+*.log
+logs/
+
+# locally-saved report downloads (EPFO ECR, ESIC, PT, bank payout, JV, MOM variance)
+payroll_*_detailed.xlsx
+EPFO_ECR_*.xlsx
+ESIC_Monthly_*.xlsx
+PT_Statement_*.xlsx
+Bank_Payout_Schedule_*.xlsx
+Journal_Voucher_*.xlsx
+MOM_Variance_*.xlsx
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 5. NODE / REACT  (payroll_f/**, frontend/**)
+# ──────────────────────────────────────────────────────────────────────────────
+node_modules/
+.npm/
+.yarn/
+.pnpm-store/
+
+# build output
+dist/
+build/
+.vite/
+.cache/
+.parcel-cache/
+next/
+.nuxt/
+.svelte-kit/
+.output/
+
+# test / lint caches
+coverage/
+.nyc_output/
+.eslintcache
+.stylelintcache
+playwright-report/
+test-results/
+.playwright/
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 6. OS / EDITOR / BACKUP NOISE
+# ──────────────────────────────────────────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+desktop.ini
+
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.shared.json
+*.swp
+*.swo
+*~
+*.orig
+*.rej
+*.bak
+*.tmp
+*.old
+*.copy
+
+# ──────────────────────────────────────────────────────────────────────────────
+# 7. DELIBERATELY KEPT  (do not uncomment)
+#    payroll_b/payroll/fonts/   → TrueType fonts needed by ReportLab at runtime
+#    payroll_b/payroll/tests/   → the verification suite (Rule 14)
+#    *.md                       → AGENTS.md / CLAUDE.md are security-critical policy
+# ══════════════════════════════════════════════════════════════════════════════
+# ALREADY TRACKED — .gitignore cannot fix these; run these once, then commit:
+#
+#   git rm -r --cached payroll_b/payroll/portal/__pycache__ payroll_b/payroll/tests/__pycache__
+#   git rm --cached payroll_b/payroll/.env        # ROTATE THE SMTP PASSWORD FIRST
+#   git commit -m "chore: untrack committed secrets and bytecode, add .gitignore"
+#
+# Then purge .env from history (it is still readable in every past commit):
+#   git filter-repo --path payroll_b/payroll/.env --invert-paths
+#   git push --force --all && git reflog expire --expire=now --all && git gc --prune=now
+# ══════════════════════════════════════════════════════════════════════════════
